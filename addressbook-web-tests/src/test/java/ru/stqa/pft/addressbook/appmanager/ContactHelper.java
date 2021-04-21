@@ -26,7 +26,11 @@ public class ContactHelper extends HelperBase {
         click(By.cssSelector("img[title='Edit']"));
     }
 
-    public void deleteOpenedContact() {
+    public void submitContactDeletion() {
+        click(By.cssSelector("input[value='Delete']"));
+    }
+
+    public void submitContactModification() {
         click(By.cssSelector("input[value='Delete']"));
     }
 }
