@@ -33,7 +33,7 @@ public class ApplicationManager {
         } else {
             throw new Exception("Unknown browser");
         }
-        wd.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        wd.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         groupHelper = new GroupHelper(wd);
         contactHelper = new ContactHelper(wd);
         navigationHelper = new NavigationHelper(wd);
