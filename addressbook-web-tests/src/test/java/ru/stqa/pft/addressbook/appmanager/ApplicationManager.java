@@ -3,6 +3,8 @@ package ru.stqa.pft.addressbook.appmanager;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.remote.BrowserType;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,10 +17,22 @@ public class ApplicationManager {
     private ContactHelper contactHelper;
 
     private SessionHelper sessionHelper;
+    private String browser;
 
-    public void init() {
-        WebDriverManager.chromedriver().setup();
-        wd = new ChromeDriver();
+    public ApplicationManager(String browser) {
+        this.browser = browser;
+    }
+
+    public void init() throws Exception {
+        if (browser.equals(BrowserType.CHROME)) {
+            WebDriverManager.chromedriver().setup();
+            wd = new ChromeDriver();
+        } else if (browser.equals(BrowserType.OPERA_BLINK)) {
+            WebDriverManager.operadriver().setup();
+            wd = new OperaDriver();
+        } else {
+            throw new Exception("Unknown browser");
+        }
         wd.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         groupHelper = new GroupHelper(wd);
         contactHelper = new ContactHelper(wd);
