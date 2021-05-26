@@ -1,35 +1,76 @@
 package ru.stqa.pft.addressbook.model;
 
 import com.google.gson.annotations.Expose;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "addressbook")
 public class ContactData {
+
+    @Id
+    @Column(name = "id")
     private int id = Integer.MAX_VALUE;
+
+    @Column(name = "firstname")
     @Expose
     private String firstName;
+
+    @Column(name = "lastname")
     @Expose
     private String lastName;
+
+    @Column(name = "address")
+    @Type(type = "text")
     @Expose
     private String address;
+
+    @Column(name = "email")
+    @Type(type = "text")
     @Expose
     private String email;
+
+    @Column(name = "email2")
+    @Type(type = "text")
     @Expose
     private String email2;
+
+    @Column(name = "email3")
+    @Type(type = "text")
     @Expose
     private String email3;
+
+    @Transient
     @Expose
     private String allEmails;
+
+    @Column(name = "home")
+    @Type(type = "text")
     @Expose
     private String homePhone;
+
+    @Column(name = "mobile")
+    @Type(type = "text")
     @Expose
     private String mobilePhone;
+
+    @Column(name = "work")
+    @Type(type = "text")
     @Expose
     private String workPhone;
+
+    @Transient
     @Expose
     private String allPhones;
+
+    @Transient
     @Expose
     private String group;
+
+    @Column(name = "photo")
+    @Type(type = "text")
     @Expose
     private String photo;
 
@@ -162,10 +203,17 @@ public class ContactData {
     @Override
     public String toString() {
         return "ContactData{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", id=" + id +
-                '}';
+            "id=" + id +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", address='" + address + '\'' +
+            ", email='" + email + '\'' +
+            ", email2='" + email2 + '\'' +
+            ", email3='" + email3 + '\'' +
+            ", homePhone='" + homePhone + '\'' +
+            ", mobilePhone='" + mobilePhone + '\'' +
+            ", workPhone='" + workPhone + '\'' +
+            '}';
     }
 
     @Override
@@ -173,11 +221,11 @@ public class ContactData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ContactData that = (ContactData) o;
-        return id == that.id && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName);
+        return id == that.id && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(address, that.address) && Objects.equals(email, that.email) && Objects.equals(email2, that.email2) && Objects.equals(email3, that.email3) && Objects.equals(homePhone, that.homePhone) && Objects.equals(mobilePhone, that.mobilePhone) && Objects.equals(workPhone, that.workPhone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName);
+        return Objects.hash(id, firstName, lastName, address, email, email2, email3, homePhone, mobilePhone, workPhone);
     }
 }

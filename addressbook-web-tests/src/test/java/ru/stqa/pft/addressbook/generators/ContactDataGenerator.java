@@ -16,64 +16,65 @@ import java.util.List;
 
 public class ContactDataGenerator {
 
-    @Parameter(names = "-c", description = "Contact count")
-    public int count;
+  @Parameter(names = "-c", description = "Contact count")
+  public int count;
 
-    @Parameter(names = "-f", description = "Target file")
-    public String file;
+  @Parameter(names = "-f", description = "Target file")
+  public String file;
 
-    @Parameter(names = "-d", description = "Data format")
-    public String format;
+  @Parameter(names = "-d", description = "Data format")
+  public String format;
 
-    public static void main(String[] args) throws IOException {
-        ContactDataGenerator generator = new ContactDataGenerator();
-        JCommander jCommander = new JCommander(generator);
-        try {
-            jCommander.parse(args);
-        } catch (ParameterException e) {
-            jCommander.usage();
-            return;
-        }
-        generator.run();
+  public static void main(String[] args) throws IOException {
+    ContactDataGenerator generator = new ContactDataGenerator();
+    JCommander jCommander = new JCommander(generator);
+    try {
+      jCommander.parse(args);
+    } catch (ParameterException e) {
+      jCommander.usage();
+      return;
+    }
+    generator.run();
+  }
+
+  private void run() throws IOException {
+    List<ContactData> contacts = generateContacts(count);
+    if (format.equals("csv")) {
+      saveAsCsv(contacts, new File(file));
+    } else if (format.equals("json")) {
+      saveAsJson(contacts, new File(file));
+    } else {
+      System.out.println("Unrecognized format " + format);
     }
 
-    private void run() throws IOException {
-        List<ContactData> contacts = generateContacts(count);
-        if (format.equals("csv")) {
-            saveAsCsv(contacts, new File(file));
-        } else if (format.equals("json")) {
-            saveAsJson(contacts, new File(file));
-        } else {
-            System.out.println("Unrecognized format " + format);
-        }
+  }
 
+  private void saveAsJson(List<ContactData> contacts, File file) throws IOException {
+    Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
+    String json = gson.toJson(contacts);
+    try (Writer writer = new FileWriter(file)) {
+      writer.write(json);
     }
+  }
 
-    private void saveAsJson(List<ContactData> contacts, File file) throws IOException {
-        Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
-        String json = gson.toJson(contacts);
-        try (Writer writer = new FileWriter(file)) {
-            writer.write(json);
-        }
+  private void saveAsCsv(List<ContactData> contacts, File file) throws IOException {
+    try (Writer writer = new FileWriter(file)) {
+      for (ContactData contact : contacts) {
+        writer.write(String.format("%s;%s;%s;%s;%s;%s\n", contact.getFirstName(), contact.getLastName(),
+            contact.getAddress(), contact.getEmail(), contact.getHomePhone(), contact.getGroup()));
+      }
     }
+  }
 
-    private void saveAsCsv(List<ContactData> contacts, File file) throws IOException {
-        try (Writer writer = new FileWriter(file)) {
-            for (ContactData contact : contacts) {
-                writer.write(String.format("%s;%s;%s;%s;%s;%s\n", contact.getFirstName(), contact.getLastName(),
-                        contact.getAddress(), contact.getEmail(), contact.getHomePhone(), contact.getGroup()));
-            }
-        }
+  private List<ContactData> generateContacts(int count) {
+    List<ContactData> contacts = new ArrayList<>();
+    String photo = "src/test/resources/znak.jpg";
+    for (int i = 0; i < count; i++) {
+      contacts.add(new ContactData().withFirstName("firstName " + i)
+          .withLastName("lastName " + i).withAddress("address " + i).withEmail("a@a.ru")
+            .withEmail2("").withEmail3("").withHomePhone("1234567").withMobilePhone("").withWorkPhone("")
+          .withGroup("test1").withPhoto(photo));
     }
-
-    private List<ContactData> generateContacts(int count) {
-       List<ContactData> contacts = new ArrayList<>();
-       String photo = "src/test/resources/znak.jpg";
-        for (int i = 0; i < count; i++) {
-            contacts.add(new ContactData().withFirstName("firstName " + i)
-                    .withLastName("lastName " + i).withAddress("address " + i).withEmail("a@a.ru")
-                    .withHomePhone("1234567").withGroup("test1").withPhoto(photo));
-        }
-        return contacts;
-    }
+    return contacts;
+  }
 }
