@@ -38,4 +38,11 @@ public class DbHelper {
     session.close();
     return new Contacts(result);
   }
+
+  public ContactData getContactById(int id) {
+    Session session = sessionFactory.openSession();
+    ContactData contactData = session.get(ContactData.class, id);
+    session.close();
+    return contactData;
+  }
 }

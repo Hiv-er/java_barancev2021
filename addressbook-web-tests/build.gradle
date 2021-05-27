@@ -19,6 +19,8 @@ dependencies {
     testImplementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.25'
     implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.4.32.Final'
+// https://mvnrepository.com/artifact/io.rest-assured/rest-assured
+    testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '3.0.0'
 
 }
 
@@ -34,6 +36,10 @@ task testGroups(type: Test) {
     if (project.hasProperty("target")) {
         systemProperty 'target', "${target}"
     }
+
+    if (project.hasProperty("verifyUI")) {
+        systemProperty 'verifyUI', "${verifyUI}"
+    }
 }
 
 task testContacts(type: Test) {
@@ -47,5 +53,9 @@ task testContacts(type: Test) {
 
     if (project.hasProperty("target")) {
         systemProperty 'target', "${target}"
+    }
+
+    if (project.hasProperty("verifyUI")) {
+        systemProperty 'verifyUI', "${verifyUI}"
     }
 }

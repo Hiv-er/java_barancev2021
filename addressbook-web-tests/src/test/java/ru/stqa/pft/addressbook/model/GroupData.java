@@ -3,11 +3,10 @@ package ru.stqa.pft.addressbook.model;
 import com.google.gson.annotations.Expose;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "group_list")
@@ -31,6 +30,10 @@ public class GroupData {
     @Expose
     private String footer;
 
+    @ManyToMany(mappedBy = "groups")
+    private Set<ContactData> contacts = new HashSet<>();
+
+
     public String getName() {
         return name;
     }
@@ -45,6 +48,10 @@ public class GroupData {
 
     public int getId() {
         return id;
+    }
+
+    public Contacts getContacts() {
+        return new Contacts(contacts);
     }
 
     public GroupData withId(int id) {
