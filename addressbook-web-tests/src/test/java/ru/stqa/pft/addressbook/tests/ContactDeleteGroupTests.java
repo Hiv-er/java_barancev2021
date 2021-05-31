@@ -9,6 +9,8 @@ import ru.stqa.pft.addressbook.model.Contacts;
 import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.Groups;
 
+import java.util.Iterator;
+
 public class ContactDeleteGroupTests extends TestBase {
 
   @BeforeMethod
@@ -32,13 +34,22 @@ public class ContactDeleteGroupTests extends TestBase {
   @Test
   public void testContactDeleteGroup() {
     Contacts contacts = app.db().contacts();
-    ContactData contact = contacts.iterator().next();
-    GroupData group = contact.getGroups().iterator().next();
+    GroupData group;
+
+    Iterator<ContactData> iterator = contacts.iterator();
+    ContactData contact = iterator.next();
+    while (contact.getGroups().size() == 0 && iterator.hasNext()) {
+      contact = iterator.next();
+    }
 
     app.goTo().homePage();
 
     if (contact.getGroups().size() == 0) {
+      Groups groups = app.db().groups();
+      group = groups.iterator().next();
       app.contact().addToGroup(contact, group);
+    } else {
+      group = contact.getGroups().iterator().next();
     }
 
     app.contact().removeFromGroup(contact, group);
