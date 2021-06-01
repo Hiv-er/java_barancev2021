@@ -14,7 +14,14 @@ dependencies {
     implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
     testImplementation("io.github.bonigarcia:webdrivermanager:4.4.0")
     testImplementation group: 'org.hamcrest', name: 'java-hamcrest', version: '2.0.0.0'
-
+    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+    implementation 'commons-net:commons-net:3.8.0'
+    implementation group: 'commons-net', name: 'commons-net', version: '3.8.0'
+    testImplementation group: 'org.subethamail', name: 'subethasmtp', version: '3.1.7'
+    implementation group: 'ru.lanwen.verbalregex', name: 'java-verbal-expressions', version: '1.8'
+    testImplementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.25'
+    implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.4.32.Final'
 }
 
 test {
