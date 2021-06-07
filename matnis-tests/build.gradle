@@ -22,6 +22,8 @@ dependencies {
     testImplementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.25'
     implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.4.32.Final'
+    implementation group: 'biz.futureware.mantis', name: 'mantis-axis-soap-client', version: '1.2.19'
+
 }
 
 test {
