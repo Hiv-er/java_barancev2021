@@ -5,9 +5,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.remote.BrowserType;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.File;
 import java.io.FileReader;
+import java.net.URL;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -35,14 +38,20 @@ public class ApplicationManager {
 
         dbHelper = new DbHelper();
 
-        if (browser.equals(BrowserType.CHROME)) {
-            WebDriverManager.chromedriver().setup();
-            wd = new ChromeDriver();
-        } else if (browser.equals(BrowserType.OPERA_BLINK)) {
-            WebDriverManager.operadriver().setup();
-            wd = new OperaDriver();
+        if ("".equals(properties.getProperty("selenium.server"))) {
+            if (browser.equals(BrowserType.CHROME)) {
+                WebDriverManager.chromedriver().setup();
+                wd = new ChromeDriver();
+            } else if (browser.equals(BrowserType.OPERA_BLINK)) {
+                WebDriverManager.operadriver().setup();
+                wd = new OperaDriver();
+            } else {
+                throw new Exception("Unknown browser");
+            }
         } else {
-            throw new Exception("Unknown browser");
+            DesiredCapabilities capabilities = new DesiredCapabilities();
+            capabilities.setBrowserName(browser);
+            wd = new RemoteWebDriver(new URL(properties.getProperty("selenium.server")), capabilities);
         }
         wd.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         wd.get(properties.getProperty("web.baseUrl"));
