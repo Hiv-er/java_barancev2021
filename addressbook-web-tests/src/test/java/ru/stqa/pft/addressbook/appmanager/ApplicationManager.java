@@ -1,6 +1,7 @@
 package ru.stqa.pft.addressbook.appmanager;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.opera.OperaDriver;
@@ -51,6 +52,7 @@ public class ApplicationManager {
         } else {
             DesiredCapabilities capabilities = new DesiredCapabilities();
             capabilities.setBrowserName(browser);
+            capabilities.setPlatform(Platform.fromString(System.getProperty("platform", "MAC")));
             wd = new RemoteWebDriver(new URL(properties.getProperty("selenium.server")), capabilities);
         }
         wd.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
